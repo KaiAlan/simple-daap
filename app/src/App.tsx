@@ -1,10 +1,16 @@
 import { useForm, } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, TuserSchema } from "./schemas/user.schema";
+import { useContext, useState } from "react";
 
 // import { ContractAddress, ContractAbi } from "./constants/contractConstants";
+import { SimpleStorageContext, SimpleStorageContextType } from "./Context/SimpleStorageContext";
+import { shortenAddress } from "./utils/shortenAddres";
 
 function App() {
+
+  const [storedData, setStoredData ] = useState<any>();
+  const { connectWallet, currentAccount, storeData, getData, balance, chainId, chainname } = useContext(SimpleStorageContext) as SimpleStorageContextType;
 
   const {
     register,
@@ -24,7 +30,7 @@ function App() {
   // console.log(ContractAbi);
 
   return (
-    <main className="flex flex-col justify-center items-center min-w-screen min-h-screen w-full h-screen">
+    <main className="flex flex-col justify-center items-center gap-5 min-w-screen min-h-screen w-full h-screen">
       <h1>Hello from vite app</h1>
       <form
       onSubmit={handleSubmit(handleFormSubmit)}
@@ -82,6 +88,42 @@ function App() {
         className="w-1/5 h-8 bg-blue-400 disabled:bg-blue-900 rounded-md"
         >Submit</button>
       </form>
+
+      <h1>This here is Simple Storage contract section:</h1>
+      <div className="flex flex-col justify-center items-center gap-10 w-1/3 h-3/5 border-2 border-white rounded-md">
+      <button
+        type="button"
+        className="w-1/5 h-8 bg-blue-400 disabled:bg-blue-900 rounded-md"
+        onClick={connectWallet}
+        >Connect</button>
+        {
+          chainId && (
+            <ul>
+              <li>chaind id: {chainId}</li>
+              <li>current account: {shortenAddress(currentAccount)}</li>
+              <li>chain name: {chainname}</li>
+              <li>balance: {balance}</li>
+            </ul>
+          )
+        }
+      <button
+        type="button"
+        onClick={() => storeData(5)}
+        className="w-1/5 h-8 bg-blue-400 disabled:bg-blue-900 rounded-md"
+        >Set</button>
+      <button
+        type="button"
+        onClick={() => setStoredData(getData)}
+        className="w-1/5 h-8 bg-blue-400 disabled:bg-blue-900 rounded-md"
+        >Get</button>
+
+        {
+          storedData && (
+            <h1>{storedData}</h1>
+          )
+        }
+      </div>
+      
     </main>
   )
 }

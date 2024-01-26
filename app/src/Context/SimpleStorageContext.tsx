@@ -11,6 +11,7 @@ export type SimpleStorageContextType = {
   balance: string | undefined;
   chainId: number | undefined;
   chainname: string | undefined;
+  data: string | undefined;
 };
 
 export const SimpleStorageContext =
@@ -36,6 +37,7 @@ export const SimpleStorageProvider: React.FC<{ children: ReactNode }> = ({
   const [currentAccount, setCurrentAccount] = useState<string | undefined>();
   const [chainId, setChainId] = useState<number | undefined>();
   const [chainname, setChainName] = useState<string | undefined>();
+  const [data, setData ] = useState<string | undefined>();
 
   useEffect(() => {
     if (!currentAccount || !ethers.isAddress(currentAccount)) return;
@@ -85,7 +87,7 @@ export const SimpleStorageProvider: React.FC<{ children: ReactNode }> = ({
   
       const simpleStorageContract = await getEthereumContract();
   
-      simpleStorageContract.set(data);
+      await simpleStorageContract.set(data).then((res) => console.log(res));
   
       console.log("data stored");
     } catch (error) {
@@ -100,11 +102,12 @@ export const SimpleStorageProvider: React.FC<{ children: ReactNode }> = ({
         return
       }
   
-      const simpleStorageContract =await getEthereumContract();
-  
-      const storedData = await simpleStorageContract.get();
-  
-      return storedData;
+      const simpleStorageContract = await getEthereumContract();
+      const data1 = (await simpleStorageContract.get()) ?? 'oopsi';
+      const data2 = data1.toString();
+      setData(data2);
+      console.log(data2)
+      
     } catch (error) {
       console.log(error)
     }
@@ -132,12 +135,12 @@ export const SimpleStorageProvider: React.FC<{ children: ReactNode }> = ({
   // };
 
   // useEffect(() => {
-  //   checkIfWalletIsConnected();
-  // }, []);
+  //   setData(data);
+  // }, [data]);
 
   return (
     <SimpleStorageContext.Provider
-      value={{ connectWallet, storeData, getData, currentAccount, balance, chainId, chainname }}
+      value={{ connectWallet, storeData, getData, currentAccount, balance, chainId, chainname, data }}
     >
       {children}
     </SimpleStorageContext.Provider>

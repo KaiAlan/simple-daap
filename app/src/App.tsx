@@ -1,7 +1,7 @@
 import { useForm, } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema, TuserSchema } from "./schemas/user.schema";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 // import { ContractAddress, ContractAbi } from "./constants/contractConstants";
 import { SimpleStorageContext, SimpleStorageContextType } from "./Context/SimpleStorageContext";
@@ -9,8 +9,7 @@ import { shortenAddress } from "./utils/shortenAddres";
 
 function App() {
 
-  const [storedData, setStoredData ] = useState<any>();
-  const { connectWallet, currentAccount, storeData, getData, balance, chainId, chainname } = useContext(SimpleStorageContext) as SimpleStorageContextType;
+  const { connectWallet, currentAccount, storeData, getData, balance, chainId, chainname, data } = useContext(SimpleStorageContext) as SimpleStorageContextType;
 
   const {
     register,
@@ -108,18 +107,20 @@ function App() {
         }
       <button
         type="button"
-        onClick={() => storeData(5)}
+        onClick={() => storeData(33)}
         className="w-1/5 h-8 bg-blue-400 disabled:bg-blue-900 rounded-md"
         >Set</button>
       <button
         type="button"
-        onClick={() => setStoredData(getData)}
+        onClick={() => getData()}
         className="w-1/5 h-8 bg-blue-400 disabled:bg-blue-900 rounded-md"
         >Get</button>
 
         {
-          storedData && (
-            <h1>{storedData}</h1>
+          data && (
+            
+            <h1>data: {data}
+            </h1>
           )
         }
       </div>

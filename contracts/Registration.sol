@@ -1,5 +1,5 @@
 //SPDX-License-Identifier:MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.9;
 contract Registration
 {
     //farmers details
@@ -12,14 +12,14 @@ contract Registration
     mapping(address=>Farmer)public addresstofarmer;//checks whether the given address is a farmer or not
     Farmer[] private farmer;//an array to store all the farmer's info
 
-    function addFarmer(address _f,string memory _n,string memory _c)public{
-        Farmer memory newf=Farmer({f:_f
+    function addFarmer(string memory _n,string memory _c)public{
+        Farmer memory newf=Farmer({f:msg.sender
         ,name:_n
         ,crops:_c});
         farmer.push(newf);
 
-        Peoplevalidation[_f]="f";
-        addresstofarmer[_f]=newf;
+        Peoplevalidation[msg.sender]="f";
+        addresstofarmer[msg.sender]=newf;
     }
 
 

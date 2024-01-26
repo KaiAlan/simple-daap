@@ -4,12 +4,13 @@ import { userSchema, TuserSchema } from "./schemas/user.schema";
 import { useContext } from "react";
 
 // import { ContractAddress, ContractAbi } from "./constants/contractConstants";
-import { SimpleStorageContext, SimpleStorageContextType } from "./Context/SimpleStorageContext";
+// import { SimpleStorageContext, SimpleStorageContextType } from "./Context/SimpleStorageContext";
+import { RegistrationContext, RegistrationContextType } from "./Context/RegistrationContext";
 import { shortenAddress } from "./utils/shortenAddres";
 
 function App() {
 
-  const { connectWallet, currentAccount, storeData, getData, balance, chainId, chainname, data } = useContext(SimpleStorageContext) as SimpleStorageContextType;
+  const { connectWallet, currentAccount, registerFarmer, getFarmerDetails, balance, chainId, chainname, data } = useContext(RegistrationContext) as RegistrationContextType;
 
   const {
     register,
@@ -107,14 +108,14 @@ function App() {
         }
       <button
         type="button"
-        onClick={() => storeData(33)}
+        onClick={() => registerFarmer('meow', 'banana')}
         className="w-1/5 h-8 bg-blue-400 disabled:bg-blue-900 rounded-md"
-        >Set</button>
+        >Register Farmer</button>
       <button
         type="button"
-        onClick={() => getData()}
+        onClick={() => getFarmerDetails()}
         className="w-1/5 h-8 bg-blue-400 disabled:bg-blue-900 rounded-md"
-        >Get</button>
+        >Get Farmer details</button>
 
         {
           data && (
